@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,6 +77,39 @@ public class PovserviceMain extends Service {
         public void handleMessage(Message msg)
         {
             Toast.makeText(getApplicationContext(), R.string.service_service_timer_messages, Toast.LENGTH_SHORT).show();
+
+            long unixTime = System.currentTimeMillis() / 1000L;
+
+            String unixTimeString = String.valueOf (unixTime);
+
+            Process sh = null;
+            try {
+                sh = Runtime.getRuntime().exec("su", null,null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            OutputStream os = sh.getOutputStream();
+            try {
+                os.write(("/system/bin/screencap -p " + "/sdcard/tg/"+unixTimeString+".png").getBytes("ASCII"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                os.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                sh.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 }

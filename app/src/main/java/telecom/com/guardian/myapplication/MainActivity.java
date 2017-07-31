@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -145,7 +144,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
 
             // image naming and path  to include sd card  appending name you choose for file
-            String mPathNew = Environment.getExternalStorageDirectory().toString() + "/" + "shay" + ".jpg";
+//            String mPathNew = Environment.getExternalStorageDirectory().toString() + "/" + "shay" + ".jpg";
+            String mPathNew = "/system/bin/screencap -p " + "/sdcard/img.png";
 
             File imageFile = new File(mPathNew);
 
